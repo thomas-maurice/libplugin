@@ -17,6 +17,12 @@ SET(MAN_PAGES "man/libplugin.3")
 
 INCLUDE(cmake/BuildMan.cmake)
 
+IF(WIN32)
+	SET(DL_LIB "")
+ELSE()
+	SET(DL_LIB "dl")
+ENDIF()
+
 FILE(
 	GLOB_RECURSE
 	LIB_SOURCES
@@ -84,14 +90,14 @@ ADD_DEPENDENCIES(man mod)
 TARGET_LINK_LIBRARIES(
 	loader
 	plugin
-	dl
+	${DL_LIB}
 )
 
 # Linking the loader to the lib
 TARGET_LINK_LIBRARIES(
 	mod
 	plugin
-	dl
+	${DL_LIB}
 )
 
 INSTALL(TARGETS libplugin DESTINATION lib)
