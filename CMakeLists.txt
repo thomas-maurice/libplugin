@@ -42,6 +42,7 @@ ADD_LIBRARY(
 	SHARED
 	$<TARGET_OBJECTS:libplugin_common>
 )
+
 SET_TARGET_PROPERTIES(
 	libplugin
 	PROPERTIES
@@ -54,10 +55,11 @@ ADD_LIBRARY(
 	STATIC
 	$<TARGET_OBJECTS:libplugin_common>
 )
+
 SET_TARGET_PROPERTIES(
 	libplugin_static
 	PROPERTIES
-	OUTPUT_NAME "plugin"
+	OUTPUT_NAME "libplugin"
 	PREFIX ""
 )
 
@@ -82,7 +84,7 @@ ADD_EXECUTABLE(
 )
 
 # Dependencies
-ADD_DEPENDENCIES(loader libplugin)
+ADD_DEPENDENCIES(loader libplugin libplugin_static)
 ADD_DEPENDENCIES(mod loader libplugin)
 ADD_DEPENDENCIES(man mod)
 
@@ -99,6 +101,6 @@ TARGET_LINK_LIBRARIES(
 	${DL_LIB}
 )
 
-INSTALL(TARGETS libplugin DESTINATION lib)
+INSTALL(TARGETS libplugin libplugin_static DESTINATION lib)
 INSTALL(FILES ${PROJECT_SOURCE_DIR}/include/libplugin.h DESTINATION include)
 INSTALL(DIRECTORY ${PROJECT_SOURCE_DIR}/include/libplugin DESTINATION include)
