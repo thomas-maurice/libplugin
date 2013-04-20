@@ -12,7 +12,7 @@ SET(PROJECT_VERSION 0.1)
 SET(CMAKE_CXX_FLAGS "-Wall -O3 -s  -fPIC")
 SET(BINARY_OUTPUT_PATH ${PROJECT_BINARY_DIR})
 # Man
-SET(MAN_PAGES "man/libplugin.3")
+SET(MAN_PAGES "man/libplugin.Plugin.3" "man/libplugin.macros.3")
 
 INCLUDE(cmake/BuildMan.cmake)
 

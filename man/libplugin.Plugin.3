@@ -1,0 +1,160 @@
+.TH "Plugin" 3 "Sat Apr 20 2013" "Version 0.1" "libplugin" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Plugin \- 
+.PP
+The main class of the library, the plugin handling one\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <plugin\&.h>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBPlugin\fP (std::string lib)"
+.br
+.RI "\fIOverloaded constructor\&. \fP"
+.ti -1c
+.RI "\fBPlugin\fP ()"
+.br
+.RI "\fIThe most basic constructor\&. \fP"
+.ti -1c
+.RI "void \fBset_file\fP (std::string p_file)"
+.br
+.RI "\fIChanges the filename of the plugin file\&. \fP"
+.ti -1c
+.RI "int \fBload\fP ()"
+.br
+.RI "\fILoads the plugin\&. \fP"
+.ti -1c
+.RI "int \fBunload\fP ()"
+.br
+.RI "\fIUnloads the plugin\&. \fP"
+.ti -1c
+.RI "int \fBreload\fP ()"
+.br
+.RI "\fIReloads the plugin\&. \fP"
+.ti -1c
+.RI "int \fBdo_process\fP (void *args)"
+.br
+.RI "\fIProcesses the main function of the plugin\&. \fP"
+.ti -1c
+.RI "void * \fBplugin_info\fP ()"
+.br
+.RI "\fIReturns a pointer on custom plugin info\&. \fP"
+.ti -1c
+.RI "std::string \fBget_file\fP ()"
+.br
+.RI "\fIReturns the file name of the plugin\&. \fP"
+.ti -1c
+.RI "bool \fBis_loaded\fP ()"
+.br
+.RI "\fIReturns true if the plugin is successfully loaded\&. \fP"
+.in -1c
+.SH "Detailed Description"
+.PP 
+The main class of the library, the plugin handling one\&. 
+
+This class is intended to provide an interface between a dynamic plugin and your main application\&. Plugins file (\&.dll or \&.so depending of your OS) are loaded through this class\&. \fBPlugin\fP file shall provide the following methods :
+.IP "\(bu" 2
+\fCint on_load()\fP
+.IP "\(bu" 2
+\fCint on_process(void* args)\fP
+.IP "\(bu" 2
+\fCint on_unload()\fP
+.IP "\(bu" 2
+\fCvoid* plugininfo()\fP
+.PP
+.PP
+If those methods are not provided, the loading of the plugin shall fail\&. 
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "Plugin::Plugin (std::stringlib)"
+
+.PP
+Overloaded constructor\&. Overloaded constructor which allow you to specify the path to the module you wish to load\&.
+.PP
+\fBParameters:\fP
+.RS 4
+\fIlib\fP the path (absolute or relative) to the module you wish to load 
+.RE
+.PP
+
+.SS "Plugin::Plugin ()"
+
+.PP
+The most basic constructor\&. A more simple constructor, no filename is specified\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "int Plugin::do_process (void *args)"
+
+.PP
+Processes the main function of the plugin\&. You can pass a struct with several fields containing all the input AND output information you want your plugin to process\&. The return code of the function is totally up to you, it will not make the class react in anyway\&. You can cast your pointer using the \fBOBJ_TO_VOID\fP macro from the \fImacro\&.h\fP file\&. In your plugin you shall use the \fBVOID_TO_OBJ\fP macro to cast it back to the type you want\&.
+.PP
+\fBParameters:\fP
+.RS 4
+\fIargs\fP This is a pointer on void to the parameter you want to pass to the function\&. This can be the cast of the pointer on a struct, an object or whatever you want\&.
+.RE
+.PP
+\fBSee Also:\fP
+.RS 4
+\fBOBJ_TO_VOID\fP 
+.PP
+\fBVOID_TO_OBJ\fP 
+.RE
+.PP
+
+.SS "string Plugin::get_file ()"
+
+.PP
+Returns the file name of the plugin\&. 
+.SS "bool Plugin::is_loaded ()"
+
+.PP
+Returns true if the plugin is successfully loaded\&. Returns true if the plugin has successfully been loaded\&. If one of the functions described at the begining of this doc is missing, for exemple, the plugin won't be loaded and calls to its methods will fail\&. 
+.SS "int Plugin::load ()"
+
+.PP
+Loads the plugin\&. 
+.SS "void * Plugin::plugin_info ()"
+
+.PP
+Returns a pointer on custom plugin info\&. This function acts in a similar way than \fIdo_process\fP, it returns a pointer on void, which is actually a memory area which you need to cast back to a type you can use\&. For exemple you can imagine that this function, in your plugin will return a pointer on a custom PluginInfo class which contains information such as the author of the plugin, its version, dependecies and so on\&.
+.PP
+The cast to a pointer on an object can be done simply with the macro \fBVOID_TO_OBJ\fP\&.
+.PP
+If thre plugin is not loaded properly, this will return NULL
+.PP
+\fBSee Also:\fP
+.RS 4
+\fBVOID_TO_OBJ\fP 
+.RE
+.PP
+
+.SS "int Plugin::reload ()"
+
+.PP
+Reloads the plugin\&. This function reloads the plugin\&.
+.PP
+This is the same than to perform the following : \fCplugin\&.unload(); plugin\&.load();\fP 
+.SS "void Plugin::set_file (std::stringp_file)"
+
+.PP
+Changes the filename of the plugin file\&. \fBParameters:\fP
+.RS 4
+\fIp_file\fP Filename (relative or absolute) 
+.RE
+.PP
+
+.SS "int Plugin::unload ()"
+
+.PP
+Unloads the plugin\&. Unloads the plugin by freeing the handle on the dynamic library\&. This will call the on_unload() method of the plugin\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libplugin from the source code\&.

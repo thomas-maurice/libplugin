@@ -1,0 +1,32 @@
+.TH "include/libplugin/macros.h" 3 "Sat Apr 20 2013" "Version 0.1" "libplugin" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+include/libplugin/macros.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBOBJ_TO_VOID\fP(obj, out)   void *out = (void*)obj;"
+.br
+.ti -1c
+.RI "#define \fBVOID_TO_OBJ\fP(vd, type, out)   type *out = (type*) vd;"
+.br
+.ti -1c
+.RI "#define \fBPLUGIN_NOT_LOADED\fP   -1"
+.br
+.in -1c
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define OBJ_TO_VOID(obj, out)   void *out = (void*)obj;"
+This macro is used to cast a pointer onto an object 'obj' to a pointer to void 'out' (of course you can change the names) 
+.SS "#define PLUGIN_NOT_LOADED   -1"
+A simple define value 
+.SS "#define VOID_TO_OBJ(vd, type, out)   type *out = (type*) vd;"
+This macro is used to cast a pointer onto void 'vd' to a pointer onto an object 'out' with the type 'type'\&. So if I call \fC\fBVOID_TO_OBJ(arg, char, str)\fP\fP then it will be the same as \fCchar* str = (char*) arg\fP and it will cast arg to a string\&. 
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libplugin from the source code\&.
