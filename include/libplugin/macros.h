@@ -22,18 +22,24 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #define MACROS_HEADER
 
 	#if defined (linux)
-		#define DllExport
+		#define DllExport //!< DllExport macro you should use to define your plugin functions.
 	#elif defined (WIN32)
-		#define DllExport __declspec(dllexport)
+		#define DllExport __declspec(dllexport) //!< DllExport macro you should use to define your plugin functions.
 	#endif
 	
-	// Utilisé pour convertir l'objet "obj" de type quelconque en
-	// un pointeur sur void "out"
+	/**
+	  This macro is used to cast a pointer onto an object 'obj' to a pointer to
+	  void 'out' (of course you can change the names)
+	*/
 	#define OBJ_TO_VOID(obj, out) void *out = (void*)obj;
 	
-	// Utilisé pour convertir le pointeur sur void "vd" en un objet
-	// "obj" de type "type"
+	/**
+	  This macro is used to cast a pointer onto void 'vd' to a pointer onto an object
+	  'out' with the type 'type'. So if I call ```VOID_TO_OBJ(arg, char, str)``` then
+	  it will be the same as ```char* str = (char*) arg``` and it will cast arg to a string.
+	*/
 	#define VOID_TO_OBJ(vd, type, out) type *out = (type*) vd;
 	
+	/** A simple define value */
 	#define PLUGIN_NOT_LOADED -1
 #endif

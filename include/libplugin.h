@@ -18,6 +18,14 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 */
 
+/**
+  \mainpage libplugin documentation
+  
+  libplugin is a simple, easy to use and portable way to handle plugin
+  system in a C++ application. This is handled by a single little class,
+  Plugin.
+*/
+
 #ifndef LIBPLUGIN_HEADER
 #define LIBPLUGIN_HEADER
 

@@ -18,11 +18,21 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 */
 
+/**
+  \file plugin.cpp
+  \author Thomas Maurice
+*/
+
 #include <plugin.h>
 
 using namespace std;
 
-Plugin::Plugin(string lib)
+/**
+  \brief Overloaded constructor which allow you to specify the
+  path to the module you wish to load
+  \param[in] lib the path (absolute or relative) to the module you wish to load
+*/
+Plugin::Plugin(std::string lib)
 {
 	file = lib;
 	on_load = NULL;
@@ -33,6 +43,9 @@ Plugin::Plugin(string lib)
 	libHandle = NULL;
 }
 
+/**
+  \brief A more simple constructor, no filename is specified
+*/
 Plugin::Plugin()
 {
 	file = "";
@@ -44,6 +57,11 @@ Plugin::Plugin()
 	libHandle = NULL;
 }
 
+/**
+  \brief Changes the filename of the plugin file
+  \param[in] p_file Filename (relative or absolute)
+  
+*/
 void Plugin::set_file(std::string p_file)
 {
 	file = p_file;
@@ -154,12 +172,24 @@ int Plugin::load()
 	return 0;
 }
 
+/**
+  \brief This function reloads the plugin
+  
+  This is the same than to perform the following :
+  ``` plugin.unload();
+  plugin.load();```
+  
+*/
 int Plugin::reload()
 {
 	unload();
 	return load();
 }
 
+/**
+  Unloads the plugin by freeing the handle on the dynamic library. This will call
+  the on_unload() method of the plugin.
+*/
 int Plugin::unload()
 {
 	#if defined (WIN32)
@@ -187,6 +217,22 @@ int Plugin::unload()
 	#endif
 }
 
+/**
+  \brief Processes the main function of the plugin
+		  
+  You can pass a struct with several fields containing all the input AND output
+  information you want your plugin to process. The return code of the function is
+  totally up to you, it will not make the class react in anyway. You can cast your
+  pointer using the **OBJ_TO_VOID** macro from the *macro.h* file. In your plugin you
+  shall use the **VOID_TO_OBJ** macro to cast it back to the type you want.
+		  
+  \param[in, out] args This is a pointer on void to the parameter you want to
+  pass to the function. This can be the cast of the pointer on a struct, an object
+  or whatever you want.
+ 
+  \see OBJ_TO_VOID
+  \see VOID_TO_OBJ
+*/
 int Plugin::do_process(void *args)
 {
 	if(loaded)
@@ -197,11 +243,34 @@ int Plugin::do_process(void *args)
 	return PLUGIN_NOT_LOADED;
 }
 
+/**
+  \brief Returns a pointer on custom plugin info
+		  
+  This function acts in a similar way than *do_process*, it returns a pointer on
+  void, which is actually a memory area which you need to cast back to a type you
+  can use. For exemple you can imagine that this function, in your plugin will
+  return a pointer on a custom PluginInfo class which contains information such as
+  the author of the plugin, its version, dependecies and so on.
+  
+  The cast to a pointer on an object can be done simply with the macro **VOID_TO_OBJ**.
+ 
+  If thre plugin is not loaded properly, this will return NULL
+  
+  \see VOID_TO_OBJ
+*/
 void* Plugin::plugin_info()
 {
-	return plugininfo();
+  if(loaded)
+	  return plugininfo();
+	else
+	  return NULL;
 }
 
+/**
+  Returns true if the plugin has successfully been loaded. If one of the functions
+  described at the begining of this doc is missing, for exemple, the plugin won't
+  be loaded and calls to its methods will fail.
+*/
 bool Plugin::is_loaded()
 {
 	return loaded;
